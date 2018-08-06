@@ -18,7 +18,13 @@ forcedDB
     color: 'orange',
     planted_on: new Date(),
   }).then((v) => {
-    //console.log(v);
+    console.log("carrot is added, now tring to add a gardener")
+
+    return Gardener.create({
+      name: 'Mina',
+      age: '100',
+      favoriteVegetableId: v.id
+    });
   }).catch((err) => {
     console.log(err);
   });
@@ -43,7 +49,6 @@ forcedDB
     console.log(err);
   });
 
-
   vegetables.push(carrot, kale, tomato);
 
   return Promise.all(vegetables);
@@ -58,7 +63,6 @@ forcedDB
   }).catch((err) => {
     console.log(err);
   });*/
-
 })
 .catch(() => {
   console.error('an error occurred')
