@@ -10,29 +10,60 @@ forcedDB
   console.log('db is connected');
 })
 .then(() => {
+
   // seeding vegetables
   let vegetables = [];
 
-  const carrot = Vegetable.create({
+  const PlotVegetables = db.model('vegetable_plot');
+
+  const carrotP = Vegetable.create({
     name: 'carrot',
     color: 'orange',
-    planted_on: new Date(),
-  }).then((v) => {
-    console.log("carrot is added, now tring to add a gardener")
+    plantedOn: new Date(),
+  });
 
+  const kaleP = Vegetable.create({
+    name: 'kale',
+    color: 'dark green',
+    plantedOn: new Date(),
+  });
+
+  const tomatoP = Vegetable.create({
+    name: 'tomato',
+    color: 'red',
+    plantedOn: new Date(),
+  });
+
+  let carrot;
+  const gardener1 = carrotP.then(v => {
+    carrot = v;
     return Gardener.create({
       name: 'Mina',
       age: '100',
       favoriteVegetableId: v.id
     });
-  }).catch((err) => {
-    console.log(err);
   });
 
-  const kale = Vegetable.create({
+  const plot1 = gardener1.then(g => {
+      return Plot.create({
+        size: 100,
+        gardenerId: g.id
+      });
+    });
+
+  const carrotToSave = plot1.then(p => {
+    return PlotVegetables.create({
+      vegetableId: carrot.id,
+      plotId: p.id
+      });
+  });
+
+
+
+  /*const kale = Vegetable.create({
     name: 'kale',
     color: 'dark green',
-    planted_on: new Date(),
+    plantedOn: new Date(),
   }).then((v) => {
     //console.log(v);
   }).catch((err) => {
@@ -42,14 +73,14 @@ forcedDB
   const tomato = Vegetable.create({
     name: 'tomato',
     color: 'red',
-    planted_on: new Date(),
+    plantedOn: new Date(),
   }).then((v) => {
     //console.log(v);
   }).catch((err) => {
     console.log(err);
-  });
+  });*/
 
-  vegetables.push(carrot, kale, tomato);
+  vegetables.push(carrotToSave);//, kale, tomato);
 
   return Promise.all(vegetables);
 
@@ -63,6 +94,8 @@ forcedDB
   }).catch((err) => {
     console.log(err);
   });*/
+
+
 })
 .catch(() => {
   console.error('an error occurred')

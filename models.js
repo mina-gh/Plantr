@@ -18,7 +18,8 @@ const Plot = db.define('plot', {
     type: Sequelize.INTEGER
   },
   shaded: {
-    type: Sequelize.BOOLEAN
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 });
 
@@ -30,12 +31,13 @@ const Vegetable = db.define('vegetable', {
   color: {
     type: Sequelize.STRING
   },
-  planted_on:{
+  plantedOn:{
     type: Sequelize.DATE
   }
 });
 
-Plot.belongsTo(Gardener);
+// associations
+Plot.belongsTo(Gardener); // Plot table contains a foreign key (gardenerId);
 Gardener.hasOne(Plot);
 
 Vegetable.belongsToMany(Plot, {through: 'vegetable_plot'});
